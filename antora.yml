@@ -10,6 +10,6 @@ asciidoc:
     os-3: 10 (Pro, Enterprise)
 
 nav:
-- modules/ROOT/nav.adoc
+  - modules/ROOT/nav.adoc
 
 #  start_page: ROOT:index.adoc
