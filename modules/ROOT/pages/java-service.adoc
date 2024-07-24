@@ -95,41 +95,41 @@ docker build . -t cryptoservice
 docker run -d -p 8100:8094 cryptoservice
 ----
 
-[#config]
-== Настройка Криптосервиса в {dv} 6.1
-
-. После установки Криптосервиса создайте файл с расширением `.json` и любым именем, скопируйте созданный конфигурационный файл по пути `/usr/lib/docsvision/platform/config` и перезапустите службу *{sss-new}*. Пример содержимого файла `.json` приведён ниже:
-+
-[source,json]
-----
-{
-  "DocsVision": {
-    "BackOffice": {
-      "Server": {
-        "Extension": {
-          "ComplexSignatureServiceAddress": "ConnectAddress=http://server.domain.com:8100/cryptoservice/api/v1" <.>
-        }
-      }
-    }
-  }
-}
-----
-<.> Адрес Криптосервиса.
-+
-. Зайдите в Консоль управления и xref:mgmtconsole:user:worker-service.adoc[создайте процесс] Службы {ws} с типом конфигурации _Обслуживание ЭП_.
-+
-[WARNING]
-====
-* {blank}
-+
-include::workerservice:admin:launch.adoc[tags=cpus]
-+
-* {blank}
-+
-include:::partial$excerpts.adoc[tags=one-ws]
-====
-+
-. В соединении {dv} выберите сервер, на котором указан адрес Криптосервиса в конфигурационном файле из примера выше.
+// [#config]
+// == Настройка Криптосервиса в {dv} 6.1
+//
+// . После установки Криптосервиса создайте файл с расширением `.json` и любым именем, скопируйте созданный конфигурационный файл по пути `/usr/lib/docsvision/platform/config` и перезапустите службу *{sss-new}*. Пример содержимого файла `.json` приведён ниже:
+// +
+// [source,json]
+// ----
+// {
+//   "DocsVision": {
+//     "BackOffice": {
+//       "Server": {
+//         "Extension": {
+//           "ComplexSignatureServiceAddress": "ConnectAddress=http://server.domain.com:8100/cryptoservice/api/v1" <.>
+//         }
+//       }
+//     }
+//   }
+// }
+// ----
+// <.> Адрес Криптосервиса.
+// +
+// . Зайдите в Консоль управления и xref:mgmtconsole:user:worker-service.adoc[создайте процесс] Службы {ws} с типом конфигурации _Обслуживание ЭП_.
+// +
+// [WARNING]
+// ====
+// * {blank}
+// +
+// include::workerservice:admin:launch.adoc[tags=cpus]
+// +
+// * {blank}
+// +
+// include:::partial$excerpts.adoc[tags=one-ws]
+// ====
+// +
+// . В соединении {dv} выберите сервер, на котором указан адрес Криптосервиса в конфигурационном файле из примера выше.
 
 [#registry]
 == Настройки Криптосервиса для модулей {pl} 5.5.5 и Служба {ws} 5.5.2
@@ -193,5 +193,11 @@ include:::partial$excerpts.adoc[tags=one-ws]
 // * Значение `BatchSize`. Количество карточек, которое Сервис ищет и обрабатывает за один раз.
 // +
 // Если значение не задано, используется значение по умолчанию -- `500 карточек`.
-//
-// События работы сервиса записываются в журнал Службы рабочих процессов, расположенный по адресу: `C:\ProgramData\Docsvision\WorkerService\Logs`.
+
+События работы сервиса записываются в журнал Криптосервиса. Ознакомиться с журналом можно, имея идентификатор контейнера:
+
+ sudo docker ps <.>
+ sudo docker logs идентификатор-контейнера <.>
+
+<.> Узнать идентификатор контейнера.
+<.> Посмотреть журнал Криптосервиса.
