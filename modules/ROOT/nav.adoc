@@ -77,3 +77,4 @@
 *** xref:java-service.adoc[]
 ** xref:config-attorney.adoc[]
 ** xref:localize.adoc[]
+** xref:create-cert.adoc[]
