@@ -1,5 +1,5 @@
 name: engineer
-version: dv5
+version: 'dv5'
 title: Настройка системы
 asciidoc:
   attributes:
