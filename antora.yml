@@ -1,8 +1,7 @@
 name: engineer
-version: 'dev'
-display_version: 'dev'
-prerelease: true
 title: Настройка системы
+version: 'dev'
+prerelease: true
 asciidoc:
   attributes:
     os-1: 7 SP 1 (Enterprise, Professional, Ultimate)
