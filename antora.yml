@@ -1,7 +1,7 @@
 name: engineer
-version: 'dv5_GBL-3780'
-prerelease: true
 title: Настройка системы
+version: 'dv5'
+prerelease: false
 asciidoc:
   attributes:
     os-1: 7 SP 1 (Enterprise, Professional, Ultimate)
@@ -9,6 +9,6 @@ asciidoc:
     os-3: 10 (Pro, Enterprise)
 
 nav:
-- modules/ROOT/nav.adoc
+  - modules/ROOT/nav.adoc
 
 #  start_page: ROOT:index.adoc
