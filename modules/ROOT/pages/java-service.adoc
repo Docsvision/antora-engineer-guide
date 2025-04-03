@@ -212,3 +212,53 @@ include:::partial$excerpts.adoc[tags=one-ws]
 Контейнер криптосервиса можно сразу смонтировать вместе с файлом настроек OCSP сервиса следующим образом:
 
  $ docker run -d -p 8100:8094 -v /path/to/settings.json:/etc/cryptoservice/settings.json packages.docsvision.com/cryptoservice
+
+[#https]
+== Настройка подключения к криптосервису по HTTPS
+
+. Создайте PKCS12-файл. Шаг можно пропустить, если уже есть сертификат в формате `.p12` или `.pfx`.
++
+[source,bash]
+----
+openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out keystore.p12 -passout pass:MyP@ssw0rd <.>
+----
+<.> Параметры:
++
+* `-in fullchain.pem` - промежуточный и конечный сертификат
+* `-inkey privkey.pem` - приватный ключ
+* `-out keystore.p12` - имя выходного PKCS12-файла
+* `-passout pass:MyP@ssw0rd` - пароль для защиты PKCS12-файла
++
+. Создайте файл конфигурации по адресу `C:\Program Files (x86)\Docsvision\CryptoService\appsettings.json`:
++
+[source,json]
+----
+{
+  "CryptoService": {
+    "timestampservice.name": "http://cryptopro.ru/tsp/tsp.srf",
+    "logging.file.name": "C:\\ProgramData\\Docsvision\\CryptoService\\CryptoService.log",
+    "server.ssl.key-store": "C:\\Program Files (x86)\\Docsvision\\CryptoService\\keystore.p12",  <.>
+    "server.ssl.key-store-password": "MyP@ssw0rd", <.>
+    "server.ssl.keyStoreType": "PKCS12"
+  }
+}
+----
+<.> `server.ssl.key-store=/keystore.p12` -- путь до PKCS12-файла в контейнере
+<.> `server.ssl.key-store-password=MyP@ssw0rd` -- пароль от PKCS12-файла
++
+. Запустите криптосервис.
+.. Запустите службу *Docsvision CryptoService*, если установка была выполнена при помощи инсталлятора.
+.. Если криптосеврис работает с использованием Docker, выполните:
++
+[source,bash]
+----
+docker run -d -p 8100:8094 \
+-v $(realpath application.properties):/application.properties \ <.>
+-v $(realpath keystore.p12):/keystore.p12 \ <.>
+packages.docsvision.com/cryptoservice \
+java org.springframework.boot.loader.JarLauncher \
+--spring.config.additional-location=/application.properties <.>
+----
+<.> `-v $(realpath application.properties):/application.properties` -- монтирование файла конфигурации `хост:контейнер`
+<.> `-v $(realpath keystore.p12):/keystore.p12` -- монтирование PKCS12-файла `хост:контейнер`
+<.> `--spring.config.additional-location=/application.properties` -- путь до файла конфигурации в контейнере
