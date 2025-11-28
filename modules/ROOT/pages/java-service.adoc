@@ -231,7 +231,22 @@ openssl pkcs12 -export \
 <.> Имя выходного PKCS12-файла
 <.> Пароль для защиты PKCS12-файла
 +
-. Откройте файл конфигурации по адресу `C:\Program Files (x86)\Docsvision\CryptoService\appsettings.json` и укажите следующие параметры:
+. Отредактируйте конфигурационный файл:
++
+* При работе через Docker создайте файл конфигурации.
++
+[source,bash]
+----
+cat > application.properties <<EOF
+server.ssl.key-store=/keystore.p12 <.>
+server.ssl.key-store-password=MyP@ssw0rd <.>
+server.ssl.keyStoreType=PKCS12
+EOF
+----
+<.> Путь до PKCS12-файла в контейнере
+<.> Пароль от PKCS12-файла
++
+* В Windows откройте файл конфигурации по адресу `C:\Program Files (x86)\Docsvision\CryptoService\appsettings.json` и укажите следующие параметры:
 +
 [source,json]
 ----
@@ -249,7 +264,7 @@ openssl pkcs12 -export \
 <.> Пароль от PKCS12-файла
 +
 . Запустите криптосервис.
-.. Запустите службу *Docsvision CryptoService*, если установка была выполнена при помощи инсталлятора.
+.. Запустите службу *{dv} CryptoService*, если установка была выполнена при помощи инсталлятора.
 .. Если криптосеврис работает с использованием Docker, выполните:
 +
 [source,bash]
