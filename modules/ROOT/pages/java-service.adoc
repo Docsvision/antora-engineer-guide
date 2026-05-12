@@ -27,6 +27,7 @@ WARNING: Сервис обслуживания ЭП -- расширение, в�
 * Из-за использования библиотеки tspcom.dll Криптосервис требует быть развернут минимум в 32-битном процессе Службы рабочих процессов.
 * [[jcsp]]Сборки, входящие в состав https://cryptopro.ru/products/csp/downloads#latest_csp50r3_jcsp[Java CSP] версии {jcsp-v}, и лицензия на право использования ПО "КриптоПро Java CSP" на одном сервере.
 * Лицензия на право использования СКЗИ "КриптоПро CSP" версии {csp-v} на сервере.
+* Параметр `ConnectAddress` всегда должен указываться полностью, например, `ConnectAddress=http://server.domain.com:8094/cryptoservice/api/v1`.
 // Для формирования подписи лицензия не требуется, см. требования GBL-3116, GBL-3074, GBL-3326 и GBL-2865
 
 [#cryptoservice]
@@ -116,7 +117,7 @@ sudo docker logs идентификатор-контейнера <.>
 
 Поддерживается как установка на сервер {dv}, так и машину без {dv}.
 
-* При установке на сервер {dv} параметр `ComplexSignatureServiceAddress` прописывается в ветку реестра `HKEY_LOCAL_MACHINE\SOFTWARE\DocsVision\BackOffice\5.5\Server\Extension` со значением по умолчанию `ConnectAddress=http://127.0.0.1:8094/cryptoservice/api/v1`.
+* При установке на сервер {dv} параметр `ComplexSignatureServiceAddress` прописывается в ветку реестра `HKEY_LOCAL_MACHINE\SOFTWARE\DocsVision\BackOffice\5.5\Server\Extension` со значением по умолчанию `ConnectAddress=http://server.domain.com:8094/cryptoservice/api/v1`.
 * При установке на машину без {dv} параметр автоматически не добавляется в реестр, его нужно указать на сервере {dv} самостоятельно.
 
 . Запустите `Docsvision CryptoService.msi` и выполните последовательно шаги мастера установки:
@@ -270,7 +271,7 @@ EOF
   }
 }
 ----
-<.> Путь до PKCS12-файла в контейнере
+<.> Путь до PKCS12-файла
 <.> Пароль от PKCS12-файла
 +
 . Запустите криптосервис.
