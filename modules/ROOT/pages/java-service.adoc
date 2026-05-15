@@ -266,12 +266,16 @@ EOF
     "logging.file.name": "C:\\ProgramData\\Docsvision\\CryptoService\\CryptoService.log",
     "server.ssl.key-store": "C:\\Program Files (x86)\\Docsvision\\CryptoService\\keystore.p12",  <.>
     "server.ssl.key-store-password": "MyP@ssw0rd", <.>
-    "server.ssl.keyStoreType": "PKCS12"
+    "server.ssl.keyStoreType": "PKCS12",
+  "Java": [
+    "-Dloader.path=C:\\Program Files (x86)\\Docsvision\\CryptoService\\jar\\BOOT-INF\\lib\\java-csp-5.0.45559-A-b34f3a2f" <.>
+  ]
   }
 }
 ----
 <.> Путь до PKCS12-файла
 <.> Пароль от PKCS12-файла
+<.> `Java` -- папка, содержащая сборки Java CSP <<jcsp,необходимой версии>>.
 +
 . Запустите криптосервис.
 .. Запустите службу *{dv} CryptoService*, если установка была выполнена при помощи инсталлятора.
