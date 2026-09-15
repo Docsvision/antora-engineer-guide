@@ -278,4 +278,5 @@ sudo journalctl --vacuum-time=1s
 
 * "xref:settings-service:admin:log.adoc[]".
 * "xref:platform:console:file-service-logging.adoc[Журнал работы файлового сервиса]"
+* "xref:mgmtconsole:user:logs.adoc[]"
 
