@@ -30,8 +30,24 @@
         "includeAllProperties": true, <.>
         "attributes": [ <.>
           {
-          "name": "timestamp", <.>
-          "layout": "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff}" <.>
+            "name": "timestamp", <.>
+            "layout": "${date:format=yyyy-MM-dd HH\\:mm\\:ss.fff}" <.>
+          },
+          {
+            "name": "level",
+            "layout": "${level:upperCase=true}"
+          },
+          {
+            "name": "module",
+            "layout": "${logger}"
+          },
+          {
+            "name": "message",
+            "layout": "${message:withException=true}"
+          },
+          {
+            "name": "processId",
+            "layout": "${processid}"
           }
         ]
       }
@@ -40,11 +56,11 @@
       "async": true, <.>
       "logFile": { <.>
         "type": "File", <.>
-        "fileName": "${gdc:baseLogFolder}/docsvision/MODULE/MODULE${event-properties:item=Tenant} PID ${processId} ${shortdate}.log", <.>
-        "layout": "[${longdate}][${level}][${callsite}] ${message} ${exception:format=tostring,Data}", <.>
+        "fileName": "${gdc:docsvisionLogFolder}/${gdc:moduleName}/${gdc:moduleName}.log", <.>
+        "layout": "${var:jsonLayout}", <.>
         "archiveEvery": "Day", <.>
         "archiveAboveSize": 314572800, <.>
-        "archiveFileName": "${gdc:baseLogFolder}/${gdc:moduleName}/archives/${gdc:moduleName} {#}.log", <.>
+        "archiveFileName": "${gdc:docsvisionLogFolder}/${gdc:moduleName}/archives/${gdc:moduleName} {#}.log", <.>
         "archiveNumbering": "DateAndSequence", <.>
         "archiveDateFormat": "yyyy-MM-dd", <.>
         "maxArchiveFiles": 30, <.>
@@ -57,9 +73,19 @@
     },
     "rules": [ <.>
       {
-      "logger": "*",
-      "minLevel": "Warn",
-      "writeTo": "logFile"
+        "logger": "Microsoft.*",
+        "maxLevel": "Warn",
+        "final": true
+      },
+      {
+        "logger": "*",
+        "minLevel": "${when:when='${var:enableFileLogging:lowercase=true}' == 'true':inner=${var:fileLogLevel}:else=Off}",
+        "writeTo": "logFile"
+      },
+      {
+        "logger": "*",
+        "minLevel": "${when:when='${var:enableConsoleLogging:lowercase=true}' == 'true':inner=${var:consoleLogLevel}:else=Off}",
+        "writeTo": "logConsole"
       }
     ]
   }
@@ -120,24 +146,16 @@
 
 Для журналов, создаваемых с NLog, задействована архивация. Поведение по умолчанию -- архивировать журнал за предыдущий день. Если текущий размер журнала превышает 300 Мб, он будет архивирован автоматически, даже если заданный период не завершился.
 
-По умолчанию если количество архивных файлов превышает 30, самые старые файлы будут удаляться.
+По умолчанию, если количество архивных файлов превышает 30, самые старые файлы будут удаляться.
 
 Архивированием файлов журналов управляют следующие параметры NLog (пример конфигурационного файла см. <<config,выше>>):
-
-* `archiveEvery` -- создавать новый архивный файл каждый заданный период, в данном случае -- день.
-* `archiveAboveSize` -- если текущий файл превышает `300` Мб (значение по умолчанию), он будет немедленно архивирован, даже если заданный в `archiveEvery` период не завершился.
-* `archiveFileName` -- шаблон имени для архивов, `&#123;#&#125;` заменяется на номер архива.
-* `archiveNumbering` -- значение `DateAndSequence` задаёт нумерацию архивов по дате и порядковому номеру (например, `MyLog 2026-09-09 1.log`).
-* `archiveDateFormat` -- задаёт формат даты, которая подставляется в имя архивного файла при архивации журнала.
-* `maxArchiveFiles` -- максимальное количество архивных файлов, после которого старые файлы будут удаляться. По умолчанию -- `30`.
-* `createDirs` -- флаг регулирует автоматическое создание каталогов журналов. Каталоги будут создаваться автоматически, когда флаг в значении `true`.
 
 [#env-vars]
 == Переменные среды для журнала NLog
 
 Параметры журналирования NLog могут быть переопределены через переменные окружения.
 
-Переменные окружения службы преобладают над переменными окружения машины, которые преобладают над параметрами в конфигурационных файлах. После получения первого значения последующие не проверяются.
+Переменные окружения службы имеют приоритет над переменными окружения машины, которые имеют приоритет над параметрами в конфигурационных файлах. После получения первого значения последующие не проверяются.
 
 Переменные окружения указываются по аналогии с параметрами в конфигурационных файлах `appsettings.json`, вложенность параметров указывается через двойное подчёркивание: `&#95;&#95;`.
 
@@ -154,17 +172,14 @@ NLog__variables__enableFileLogging=false
 NLog__variables__enableConsoleLogging=true
 ----
 
-[#archive]
-== Архивация журналов работы
-
-300 МБ, 30 файлов, DateAndSequence
-
 [#read-logs]
 == Работа с журналом в формате JSON
 
-Обновлённый жунрал NLog пишется в JSON одной строкой, поэтому обычная команда вида:
+Обновлённый журнал NLog пишется в JSON одной строкой, поэтому обычная команда вида:
 
- sudo journalctl -u dvappserver
+ $ sudo journalctl -u dvappserver
+
+NOTE: В данном разделе приведены команды на примере службы *dvappserver*. Действительные команды будут индивидуальными для каждой службы.
 
 Выводит плохо читаемую человеком строку формата JSON:
 
@@ -173,7 +188,7 @@ NLog__variables__enableConsoleLogging=true
 {"timestamp":"2026-08-10 17:53:23.755","level":"INFO","module":"StorageServerRuntime","message":"Trying load session..."}
 ----
 
-Для удобства чтения человеком можно воспользловаться утилитой _jq_, которая выдаст более читаемый вид:
+Для удобства чтения человеком можно воспользоваться утилитой _jq_, которая выдаст более читаемый вид:
 
 [source,json]
 ----
@@ -272,11 +287,10 @@ sudo journalctl --vacuum-time=1s
  $ sudo journalctl -u dvappserver -o cat | jq 'select(.level == "ERROR")'
 
 [#modules]
-== Разделы документации модулей
+== Документация по журналированию для модулей
 
 Ниже дан список страниц документации для модулей, на которых приведена документация о журналировании с помощью NLog. Рекомендуется ознакомиться с приведённой информацией, чтобы узнать особенности журналирования для каждого модуля:
 
 * "xref:settings-service:admin:log.adoc[]".
 * "xref:platform:console:file-service-logging.adoc[Журнал работы файлового сервиса]"
 * "xref:mgmtconsole:user:logs.adoc[]"
-
