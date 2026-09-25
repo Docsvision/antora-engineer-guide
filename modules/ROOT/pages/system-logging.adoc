@@ -291,5 +291,6 @@ sudo journalctl --vacuum-time=1s
 Ниже дан список страниц документации для модулей, на которых приведена документация о журналировании с помощью NLog. Рекомендуется ознакомиться с приведённой информацией, чтобы узнать особенности журналирования для каждого модуля:
 
 * "xref:settings-service:admin:log.adoc[]".
+* "xref:platform:console:logs.adoc#server[Журнал сервера приложений]"
 * "xref:platform:console:file-service-logging.adoc[Журнал работы файлового сервиса]"
 * "xref:mgmtconsole:user:logs.adoc[]"
