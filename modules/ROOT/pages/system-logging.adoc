@@ -296,3 +296,5 @@ sudo journalctl --vacuum-time=1s
 * "xref:platform:console:search-logging.adoc[]"
 * "xref:mgmtconsole:user:logs.adoc[]"
 * "xref:solutionmngr:admin:logs.adoc[]"
+* "xref:workerservice:admin:work-log.adoc[]"
+* "xref:webclient:admin:log-config.adoc[]"
