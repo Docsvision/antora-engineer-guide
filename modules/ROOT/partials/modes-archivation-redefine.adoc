@@ -1,3 +1,4 @@
+
 [#modes]
 == Режимы журналирования
 
@@ -14,7 +15,13 @@ endif::webclient[]
 |Консоль (stdout/stderr) |`logConsole`  |`enableConsoleLogging`
 |===
 
-Оба режима ведут журнал в одинаковом JSON-формате и могут быть задействованы одновременно в Windows или Linux.
+Оба режима ведут журнал в одинаковом JSON-формате и могут быть задействованы
+ifndef::dvsupservice[]
+одновременно в Windows или Linux.
+endif::[]
+ifdef::dvsupservice[]
+одновременно.
+endif::[]
 // Но не в Docker
 
 [#archivation]
