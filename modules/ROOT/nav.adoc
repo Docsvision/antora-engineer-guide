@@ -78,6 +78,7 @@
 *** xref:search-xml-import.adoc[]
 *** xref:search-localize.adoc[]
 *** xref:search-regen-disable.adoc[]
+** xref:health-check.adoc[]
 ** xref:config-kinds.adoc[]
 ** xref:config-business-process.adoc[]
 ** xref:config-sign.adoc[]
