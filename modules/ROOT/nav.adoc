@@ -23,7 +23,7 @@
 *** xref:view-edit.adoc[]
 *** xref:view-access.adoc[]
 *** xref:view-delete.adoc[]
-*** xref:view-move.adoc[]v
+*** xref:view-move.adoc[]
 *** xref:view-settings-guide.adoc[]
 **** xref:view-data-settings.adoc[]
 ***** xref:view-card-types.adoc[]
