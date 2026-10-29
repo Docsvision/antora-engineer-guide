@@ -299,3 +299,4 @@ sudo journalctl --vacuum-time=1s
 * "xref:workerservice:admin:work-log.adoc[]"
 * "xref:webclient:admin:log-config.adoc[]"
 * "xref:webclient:admin:webservices-logging.adoc[]"
+* "xref:workflow:admin:log.adoc[]"
